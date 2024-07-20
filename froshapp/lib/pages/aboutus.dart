@@ -36,9 +36,15 @@ class _AboutUsState extends State<AboutUsPage> {
           Column(
             children: [
               // Logo
-              Padding(
-                padding: const EdgeInsets.all(40),
-                child: Image.asset('assets/images/FROSHlogo.png'),
+              Container(
+          height: MediaQuery.of(context).size.height * 0.165,
+          width: MediaQuery.of(context).size.width * 0.79,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/FROSHlogo.png"),
+              fit: BoxFit.fill,
+              ),
+          ),
               ),
               // Buttons
               Row(

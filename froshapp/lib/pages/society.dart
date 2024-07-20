@@ -45,7 +45,9 @@ class _SocietyPageState extends State<SocietyPage> {
                   GestureDetector(
                     onTap: () => _toggleView(true),
                     child: Container(
-                      width: 170,
+
+                      height: MediaQuery.of(context).size.height * 0.0430,
+                      width: MediaQuery.of(context).size.width * 0.42,
                       decoration: BoxDecoration(
                         color: isTechSelected
                             ? const Color(0xff006c48)
@@ -71,7 +73,8 @@ class _SocietyPageState extends State<SocietyPage> {
                   GestureDetector(
                     onTap: () => _toggleView(false),
                     child: Container(
-                      width: 170,
+                      height: MediaQuery.of(context).size.height * 0.0430,
+                      width: MediaQuery.of(context).size.width * 0.42,
                       decoration: BoxDecoration(
                         color: isTechSelected
                             ? const Color(0xff5b615f)

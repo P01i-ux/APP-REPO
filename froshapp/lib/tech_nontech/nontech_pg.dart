@@ -1,8 +1,9 @@
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class NonTech extends StatefulWidget {
-  const NonTech({super.key});
+  const NonTech({Key? key}) : super(key: key);
 
   @override
   State<NonTech> createState() => _NonTechState();
@@ -217,14 +218,15 @@ class _NonTechState extends State<NonTech> {
       {'image': 'assets/images/tmc.png', 'name': 'TMC', 'text': 'txt'},
     ];
 
+
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
       child: GridView.builder(
         itemCount: items.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisSpacing: 20.0,
-          crossAxisSpacing: 20.0,
+          mainAxisSpacing: MediaQuery.of(context).size.width * 0.04,
+          crossAxisSpacing: MediaQuery.of(context).size.height * 0.02,
           childAspectRatio: 0.82,
         ),
         itemBuilder: (BuildContext context, int index) {
@@ -235,7 +237,8 @@ class _NonTechState extends State<NonTech> {
             child: Container(
               decoration: BoxDecoration(
                 color: const Color(0xff171717),
-                border: Border.all(color: const Color(0xff171717), width: 2),
+                border:
+                Border.all(color: const Color(0xff171717), width: 2),
                 borderRadius: const BorderRadius.all(Radius.circular(19)),
               ),
               child: Column(
@@ -245,22 +248,22 @@ class _NonTechState extends State<NonTech> {
                     child: Center(
                       child: Image.asset(
                         items[index]['image']!,
-                        height: 100,
+                        height: MediaQuery.of(context).size.width * 0.23,
                         fit: BoxFit.contain,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                   SizedBox(height: MediaQuery.of(context).size.width * 0.03),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
+                      padding: EdgeInsets.only(bottom:  MediaQuery.of(context).size.width * 0.03),
                       child: Text(
                         items[index]['name']!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Audiowide',
-                          fontSize: 20,
+                          fontSize: MediaQuery.of(context).size.width * 0.05,
                         ),
                       ),
                     ),
@@ -279,7 +282,11 @@ class AnimatedAlertDialog extends StatefulWidget {
   final List<Map<String, dynamic>> items;
   final int currentIndex;
 
-  const AnimatedAlertDialog({super.key, required this.items, required this.currentIndex});
+  const AnimatedAlertDialog({
+    Key? key,
+    required this.items,
+    required this.currentIndex,
+  }) : super(key: key);
 
   @override
   _AnimatedAlertDialogState createState() => _AnimatedAlertDialogState();
@@ -301,7 +308,8 @@ class _AnimatedAlertDialogState extends State<AnimatedAlertDialog>
       duration: const Duration(milliseconds: 150),
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _scaleAnimation =
+        CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     _controller.forward();
   }
 
@@ -319,101 +327,102 @@ class _AnimatedAlertDialogState extends State<AnimatedAlertDialog>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _controller.reverse().then((_) {
-          Navigator.of(context).pop();
-        });
-      },
-      child: Center(
+    return Center(
+      child: ScaleTransition(
+        scale: _scaleAnimation,
         child: Stack(
-          alignment: Alignment.center,
-          children: [
-            ScaleTransition(
-              scale: _scaleAnimation,
-              child: AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                backgroundColor: Colors.transparent,
-                content: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
-                    width: 300, // Fixed width
-                    height: 500, // Fixed height
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(38),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
+            children: [ AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              backgroundColor: Colors.transparent,
+              content: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Stack(
+                    children: [Container(
+                      width: 300,
+                      height: 500,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(38),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.2),
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Image.asset(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
                             widget.items[_currentIndex]['image'],
-                            height: 150,
+                            height: 100,
                             fit: BoxFit.contain,
                           ),
-                        ),
-                        const Spacer(),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Column(
-                            children: [
-                              Text(
-                                '${widget.items[_currentIndex]['name']}',
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '\n${widget.items[_currentIndex]['text']}',
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 15),
-                              ),
-                            ],
+                          SizedBox(height: 20),
+                          Text(
+                            '${widget.items[_currentIndex]['name']}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 20),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Text(
+                                '${widget.items[_currentIndex]['text']}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
                     ),
+                    ]
+                ),
+              ),
+            ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Positioned(
+
+                  left: 20,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                    iconSize: 45,
+                    onPressed: () {
+                      if (_currentIndex > 0) {
+                        _navigateTo(_currentIndex - 1);
+                      } else {
+                        _navigateTo(widget.items.length - 1);
+                      }
+                    },
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              left: 20,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                iconSize: 45,
-                onPressed: () {
-                  if (_currentIndex > 0) {
-                    _navigateTo(_currentIndex - 1);
-                  } else {
-                    _navigateTo(widget.items.length - 1);
-                  }
-                },
-              ),
-            ),
-            Positioned(
-              right: 10,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
-                iconSize: 45,
-                onPressed: () {
-                  if (_currentIndex < widget.items.length - 1) {
-                    _navigateTo(_currentIndex + 1);
-                  } else {
-                    _navigateTo(0);
-                  }
-                },
-              ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.centerRight,
+                child: Positioned(
+                  right: 10,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+                    iconSize: 45,
+                    onPressed: () {
+                      if (_currentIndex < widget.items.length - 1) {
+                        _navigateTo(_currentIndex + 1);
+                      } else {
+                        _navigateTo(0);
+                      }
+                    },
+                  ),
+                ),
+              ),]
         ),
       ),
     );
